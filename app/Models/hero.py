@@ -1,7 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
-db = SQLAlchemy()
+from config import db
 
 class Hero(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -9,3 +9,5 @@ class Hero(db.Model):
     super_name = db.Column(db.String, unique=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    powers = db.relationship('Power', secondary='hero_power', backref='heroes')
+    powers = db.relationship('HeroPower',backref = db.backref('heroes'))
