@@ -1,12 +1,15 @@
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 
-db = SQLAlchemy()
+from config import db
 
 class Power(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
     description = db.Column(db.String)
+
+def __repr__(self):
+    return f'<Power {self.name}>'
 
 class Hero(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -15,6 +18,10 @@ class Hero(db.Model):
 
     # Establish a many-to-many relationship with Power through HeroPower
     powers = db.relationship('Power', secondary='hero_power', backref='heroes')
+
+
+def __repr__(self):
+    return f'<Hero {self.name}>'
 
 class HeroPower(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -32,46 +39,8 @@ class HeroPower(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
 
-
-# from sqlalchemy_serializer import SerializerMixin
-# from sqlalchemy.orm import validates
-# from flask_sqlalchemy import SQLAlchemy
-
-# from datetime import datetime
-
-
-# db = SQLAlchemy()
-
-# class Hero(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     name = db.Column(db.String, nullable=False)
-#     super_name = db.Column(db.String, unique=True)
-#     created_at = db.Column(db.DateTime, default=datetime.utcnow)
-#     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-#     powers = db.relationship('Power', secondary='hero_power', backref='heroes')
-#     powers = db.relationship('HeroPower',backref = db.backref('heroes'))
-
-# class Power(db.Model):
-#     id=db.Column(db.Integer,primary_key=True)
-#     name=db.Column(db.String, nullable=False)
-#     description=db.Column(db.String)
-#     created_at = db.Column(db.DateTime, default=datetime.utcnow)
-#     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-#     heroes = db.relationship('HeroPower', backref= db.backref('powers'))
+def __repr__(self):
+    return f'<HeroPower {self.strength}>'
 
 
 
-# def __repr__(self):
-#     return f'<Power {self.name}>'
-
-# class HeroPower(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     strength = db.Column(db.String(255))  
-#     hero_id = db.Column(db.Integer, db.ForeignKey('hero.id'), nullable=False)
-#     created_at = db.Column(db.DateTime, default=datetime.utcnow)
-#     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-#     power_id = db.Column(db.Integer, db.ForeignKey('power.id'), nullable=False)
-
-
-# def __repr__(self):
-#     return f'<HeroPower {self.strength}>'
