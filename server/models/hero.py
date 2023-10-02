@@ -1,6 +1,9 @@
-from dbconfig import db
+from models.dbconfig import db
+from sqlalchemy.orm import validates
+from sqlalchemy_serializer import SerializerMixin
 
 class Hero(db.Model):
+    __tablename__ = 'heroes'
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=False)

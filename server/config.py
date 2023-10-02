@@ -1,3 +1,5 @@
-from flask_sqlalchemy import SQLAlchemy
-db = SQLAlchemy()
+# config.py
 
+class Config:
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///hero.db'
+    SQLALCHEMY_TRACK_MODIFICATIONS = False

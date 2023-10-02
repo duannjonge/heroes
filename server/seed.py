@@ -1,7 +1,9 @@
 from datetime import datetime
 from random import choice
 from app import app, db
-from models import Power, Hero, HeroPower
+from models.power import Power
+from models.hero import Hero
+from models.heropower import HeroPower
 
 with app.app_context():
     print("🦸‍♀ Seeding powers...")

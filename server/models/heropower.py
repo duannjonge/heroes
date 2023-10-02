@@ -1,21 +1,25 @@
-from dbconfig import db
-from datetime import datetime
+from models.dbconfig import db
+from sqlalchemy.orm import validates
+from sqlalchemy_serializer import SerializerMixin
 
 class HeroPower(db.Model):
+    __tablename__ = 'hero_powers'
+
     id = db.Column(db.Integer, primary_key=True)
+    hero_id = db.Column(db.Integer, db.ForeignKey('heroes.id'), nullable=False)
+    power_id = db.Column(db.Integer, db.ForeignKey(
+        'powers.id'), nullable=False)
     strength = db.Column(db.String(255))
 
-    # Define foreign keys for Hero and Power
-    hero_id = db.Column(db.Integer, db.ForeignKey('hero.id'), nullable=False)
-    power_id = db.Column(db.Integer, db.ForeignKey('power.id'), nullable=False)
+    # Define the relationship from HeroPower to Hero
+    hero = db.relationship('Hero', back_populates='hero_powers')
 
-    # Define relationships with Hero and Power
-    hero = db.relationship('Hero', backref=db.backref('hero_powers', cascade='all, delete-orphan'))
-    power = db.relationship('Power')
+    # Define the relationship from HeroPower to Power
+    power = db.relationship('Power', back_populates='hero_powers')
 
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-
-
-def __repr__(self):
-    return f'<HeroPower {self.strength}>'
+    @validates('strength')
+    def validate_strength(self, key, strength):
+        if strength not in ['Strong', 'Weak', 'Average']:
+            raise ValueError(
+                "Strength must be one of 'Strong', 'Weak', or 'Average'")
+        return strength
