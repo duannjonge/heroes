@@ -1,12 +1,14 @@
 from dbconfig import db
 
 class Hero(db.Model):
+
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String, nullable=False)
-    super_name = db.Column(db.String, unique=True, nullable=False)
+    name = db.Column(db.String(255), nullable=False)
+    super_name = db.Column(db.String(255), nullable=False)
 
-    # many-to-many relationship with Power through HeroPower
-    powers = db.relationship('Power', secondary='hero_power', backref='heroes')
+    # Define the relationship from Hero to HeroPower
+    hero_powers = db.relationship('HeroPower', back_populates='hero')
 
-    def __repr__(self):
-        return f'<Hero {self.name}>'
+    # Define the relationship from Hero to Power through HeroPower
+    powers = db.relationship(
+        'Power', secondary='hero_powers', back_populates='heroes')
